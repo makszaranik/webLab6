@@ -11,12 +11,6 @@
             font-size: 0.9em;
             margin-top: 10px;
         }
-        .radio-group {
-            display: flex;
-        }
-        .radio-group div {
-            margin-right: 10px;
-        }
         #deleteSelected, #duplicateSelected {
             margin-top: 10px;
             margin-right: 10px;
@@ -28,7 +22,7 @@
         <h2>Registration</h2>
 
         <label for="email">Email</label>
-        <input type="email" name="Email" required>
+        <input type="email" name="email" required>
         <span class="error-message"></span>
 
         <label for="password">Password</label>
@@ -123,24 +117,20 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('#phone');
 
-        const phoneInput = document.getElementById('phone');
-
-        phoneInput.addEventListener('input', function(e) {
+        phoneInput.addEventListener('input', function() {
             let value = phoneInput.value.replace(/\D/g, '');
 
             if (value.length === 1) {
                 value = '38(0' + value;
             }
-            
             if (value.length === 4) {
                 value = value.substring(0, 3) + value[3];
             }
-
             if (value.length > 13) {
                 value = value.substring(0, 10);
             }
-
             let formattedValue = '+38(' + value.substring(2, 5) + ') ';
             if (value.length >= 6) {
                 formattedValue += value.substring(5, 8);
@@ -151,20 +141,15 @@
             if (value.length >= 10) {
                 formattedValue += '-' + value.substring(10, 12);
             }
-
             phoneInput.value = formattedValue;
         });
-
-        phoneInput.addEventListener('focus', function() {
-            if (phoneInput.value === '') {
+        phoneInput.addEventListener('focus', function(){
+            if(phoneInput.value === ''){
                 phoneInput.value = '+38(0';
             }
         });
-
-        phoneInput.addEventListener('blur', function() {
-            if (phoneInput.value === '+38(0') {
-                phoneInput.value = '';
-            }
+        phoneInput.addEventListener('blur', function(){
+            phoneInput.value = '';
         });
 
         const form = document.getElementById('registrationForm');
@@ -173,8 +158,8 @@
         const duplicateSelectedButton = document.getElementById('duplicateSelected');
 
         
-        const emailField = form.querySelector('input[name="Email"]');
-        const passwordField = form.querySelector('input[name="password"]');
+        const emailField = form.querySelector('input[name=email]');
+        const passwordField = form.querySelector('input[name=password]');
         const surnameField = form.querySelector('input[name="surname"]');
         const nameField = form.querySelector('input[name="name"]');
         const secondnameField = form.querySelector('input[name="secondname"]');
@@ -210,10 +195,7 @@
                 return true;
             }
         }
-
-
        
-
         function validatePassword() {
             if (passwordField.value.trim() === '') {
                 passwordError.textContent = 'Password is required.';
@@ -237,6 +219,7 @@
                 return true;
             }
         }
+
         function validateName() {
             const nameRegex = /^[A-Za-zА-Яа-яЁё]+$/;
             if (nameField.value.trim() === '') {
@@ -250,6 +233,7 @@
                 return true;
             }
         }
+
         function validateBirthday() {
             const birthdayPattern = /^\d{2}\.\d{2}\.\d{4}$/;
             const birthdayValue = birthdayField.value.trim();
@@ -280,7 +264,6 @@
             }
         }
 
-
         function validateGroup() {
             if (groupField.value === '' || groupField.value === 'Select your group') {
                 groupError.textContent = 'Please select a group.';
@@ -290,6 +273,7 @@
                 return true;
             }
         }
+
         function validateSex() {
             let selected = false;
             sexFields.forEach(function(sexField) {
@@ -316,10 +300,7 @@
             }
         }
 
-        
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
+        form.addEventListener('submit', function() {
             let valid = true;
             if (!validateEmail()) valid = false;
             if (!validatePassword()) valid = false;
